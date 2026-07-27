@@ -29,10 +29,16 @@ pipeline {
             steps {
                 echo 'Testing application start...'
                 sh '''
-                      test -f  build/$INDEX_FILE 
+                      test -f build/$INDEX_FILE 
                       npm run test       
                    ''' 
             }
+        }
+    }
+
+    post {
+        success {
+            archiveArtifacts artifacts: 'build/**'
         }
     }
 
