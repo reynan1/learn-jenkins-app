@@ -25,8 +25,7 @@ pipeline {
             steps {
                 echo 'Testing application start...'
                 sh '''
-                      npm test
-                      echo "a"   
+                      npm test -- --watchAll=false        
                    ''' 
             }
         }
