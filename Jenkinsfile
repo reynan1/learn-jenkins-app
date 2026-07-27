@@ -55,6 +55,7 @@ pipeline {
                       npm run build
                       npm install -g serve
                       serve -s build
+                      npx playright test
                    ''' 
                  echo '...E2E testing application finish...'   
             }
