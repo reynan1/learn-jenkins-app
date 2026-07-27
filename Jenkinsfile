@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        INDEX_FILE = 'index.html'
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -25,7 +29,8 @@ pipeline {
             steps {
                 echo 'Testing application start...'
                 sh '''
-                      npm test        
+                      test -f  build/$INDEX_FILE 
+                      npm test -a       
                    ''' 
             }
         }
