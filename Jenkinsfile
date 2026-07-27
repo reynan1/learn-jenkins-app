@@ -56,7 +56,7 @@ pipeline {
                       npm install serve
                       node_modules/.bin/serve -s build &
                       sleep 10
-                      npx playwright test
+                      npx playwright test --reporter=html
                    ''' 
                  echo '...E2E testing application finish...'   
             }
@@ -66,6 +66,7 @@ pipeline {
     post {
         always {
             junit 'jest-results/junit.xml'
+            
         }
     }
 
