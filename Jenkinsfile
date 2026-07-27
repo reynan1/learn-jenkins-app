@@ -54,7 +54,8 @@ pipeline {
                 echo 'E2E testing application start...'
                 sh '''
                       npm install serve
-                      node_modules/.bin/serve -s build
+                      node_modules/.bin/serve -s build &
+                      sleep 10
                       npx playright test
                    ''' 
                  echo '...E2E testing application finish...'   
@@ -64,7 +65,7 @@ pipeline {
 
     post {
         always {
-            junit 'test-results/junit.xml'
+            junit 'jest-results/junit.xml'
         }
     }
 
