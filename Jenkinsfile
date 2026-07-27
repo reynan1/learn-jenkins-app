@@ -6,7 +6,7 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        /* stage('Build') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -23,42 +23,48 @@ pipeline {
                      ls -la
                    ''' 
             }
-        }
-
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
+        } */
+        
+        stage('Run Tests') {
+            parallel {
+                stage('Test') {
+                    agent {
+                        docker {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    
+                    steps {
+                        echo 'Testing application start...'
+                        sh '''
+                            test -f build/$INDEX_FILE 
+                            npm test
+                        ''' 
+                        echo '...Testing application FINISH...'   
+                    }
                 }
-            }
-            steps {
-                echo 'Testing application start...'
-                sh '''
-                      test -f build/$INDEX_FILE 
-                      npm test
-                   ''' 
-                 echo '...Testing application FINISH...'   
-            }
-        }
 
-        stage('E2E') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                    args '-u root:root'
+                stage('E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                            args '-u root:root'
+                        }
+                    }
+
+                    steps {
+                        echo 'E2E testing application start...'
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test --reporter=html
+                        ''' 
+                        echo '...E2E testing application finish...'   
+                    }
                 }
-            }
-            steps {
-                echo 'E2E testing application start...'
-                sh '''
-                      npm install serve
-                      node_modules/.bin/serve -s build &
-                      sleep 10
-                      npx playwright test --reporter=html
-                   ''' 
-                 echo '...E2E testing application finish...'   
             }
         }
     }
