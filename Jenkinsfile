@@ -36,7 +36,7 @@ pipeline {
                 echo 'Testing application start...'
                 sh '''
                       test -f build/$INDEX_FILE 
-                      
+                      npm test
                    ''' 
                  echo '...Testing application FINISH...'   
             }
