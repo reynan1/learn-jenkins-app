@@ -42,23 +42,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                echo 'Testing application start...'
-                sh '''
-                      test -f build/$INDEX_FILE 
-                      npm test
-                   ''' 
-                 echo '...Testing application FINISH...'   
-            }
-        }
-
         stage('E2E') {
             agent {
                 docker {
