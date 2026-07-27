@@ -38,6 +38,7 @@ pipeline {
                       test -f build/$INDEX_FILE 
                       
                    ''' 
+                 echo '...Testing application FINISH...'   
             }
         }
     }
