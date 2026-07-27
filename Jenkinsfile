@@ -30,7 +30,7 @@ pipeline {
                 echo 'Testing application start...'
                 sh '''
                       test -f build/$INDEX_FILE 
-                      npm run test       
+                      npm run test -- --watchAll=false      
                    ''' 
             }
         }
