@@ -44,8 +44,8 @@ pipeline {
     }
 
     post {
-        success {
-            archiveArtifacts artifacts: 'build/**'
+        always {
+            junit 'test-result/junit.xml'
         }
     }
 
