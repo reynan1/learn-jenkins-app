@@ -6,6 +6,10 @@ pipeline {
     }
 
     stages {
+        /*
+         line 1 
+         line 2   
+        */
         stage('Build') {
             agent {
                 docker {
@@ -39,6 +43,41 @@ pipeline {
                       npm test
                    ''' 
                  echo '...Testing application FINISH...'   
+            }
+        }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                echo 'Testing application start...'
+                sh '''
+                      test -f build/$INDEX_FILE 
+                      npm test
+                   ''' 
+                 echo '...Testing application FINISH...'   
+            }
+        }
+
+        stage('E2E') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                echo 'E2E testing application start...'
+                sh '''
+                      npm run build
+                      npm install -g serve
+                      serve -s build
+                   ''' 
+                 echo '...E2E testing application finish...'   
             }
         }
     }
