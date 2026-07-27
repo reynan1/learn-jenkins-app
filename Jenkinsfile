@@ -25,7 +25,7 @@ pipeline {
             steps {
                 echo 'Testing application start...'
                 sh '''
-                      npm run test
+                      npm test
                       echo "a"   
                    ''' 
             }
